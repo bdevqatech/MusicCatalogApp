@@ -1,0 +1,79 @@
+# ========================
+# Global ignores
+# ========================
+.log
+.tmp
+.bak
+.swp
+.DS_Store
+Thumbs.db
+.env
+.vscode
+
+# ========================
+# .NET  Visual Studio
+# ========================
+bin
+obj
+out
+.user
+.suo
+.userosscache
+.sln.docstates
+.dbmdl
+.pdb
+.cache
+.ncb
+.log
+.vs
+.vscode
+Generated_Code
+
+# NuGet
+.nupkg
+packages
+.snupkg
+
+# Entity Framework
+Migrations
+
+# Rider
+.idea
+
+# ========================
+# Angular  Node
+# ========================
+MusicCatalog.Clientnode_modules
+MusicCatalog.Clientdist
+MusicCatalog.Client.angular
+MusicCatalog.Client.cache
+MusicCatalog.Client.env
+
+# Optional Angular IDE files
+MusicCatalog.Client.vscode
+MusicCatalog.Client.history
+
+# Angular build output
+MusicCatalog.Clienttmp
+MusicCatalog.Clientout-tsc
+MusicCatalog.Clientpackage-lock.json
+
+# ========================
+# Logs  coverage  tools
+# ========================
+.log
+coverage
+.tgz
+
+# ========================
+# Docker  Build Artifacts (if used)
+# ========================
+docker-compose.override.yml
+.local
+
+# ========================
+# OS-specific
+# ========================
+ehthumbs.db
+Icon
+Desktop.ini
