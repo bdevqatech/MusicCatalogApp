@@ -6,8 +6,8 @@ namespace MusicCatalog.API.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly MusicCatalogContext _context;
+        public IAlbumRepository Albums { get; }
         public IRepository<Artist> Artists { get; }
-        public IRepository<Album> Albums { get; }
         public IRepository<Track> Tracks { get; }
         public IRepository<Review> Reviews { get; }
         public IRepository<Genre> Genres { get; }
@@ -17,9 +17,9 @@ namespace MusicCatalog.API.Repositories
         public UnitOfWork(MusicCatalogContext context)
         {
             _context = context;
+            Albums = new AlbumRepository(_context);
             Users = new Repository<User>(_context);
             Artists = new Repository<Artist>(_context);
-            Albums = new Repository<Album>(_context);
             Tracks = new Repository<Track>(_context);
             Reviews = new Repository<Review>(_context);
             Genres = new Repository<Genre>(_context);

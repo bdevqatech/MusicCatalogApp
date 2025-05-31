@@ -40,7 +40,7 @@ namespace MusicCatalog.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AlbumDto>> GetAlbumById(long id)
         {
-            var album = await _unitOfWork.Albums.GetByIdAsync(id);
+            var album = await _unitOfWork.Albums.GetAlbumWithDetailsAsync(id);
 
             if (album == null)
             {
@@ -48,6 +48,84 @@ namespace MusicCatalog.API.Controllers
             }
 
             return Ok(_mapper.Map<AlbumDto>(album));
+        }
+
+        // GET: api/album/artist/{artistId}
+        /// <summary>
+        /// Retrieves all albums by a specific artist ID.
+        /// </summary>
+        /// <param name="artistId">The ID of the artist to retrieve albums for.</param>
+        /// <returns>The list of albums by the artist with the specified ID.</returns>
+        [HttpGet("artist/{artistId}")]
+        public async Task<ActionResult<IEnumerable<AlbumDto>>> GetAlbumsByArtistId(long artistId)
+        {
+            var albums = await _unitOfWork.Albums.GetAlbumsByArtistIdAsync(artistId);
+
+            if (albums == null || !albums.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<IEnumerable<AlbumDto>>(albums));
+        }
+
+        // GET: api/album/genre/{genreId}
+        /// <summary>
+        /// Retrieves all albums by a specific genre ID.
+        /// </summary>
+        /// <param name="genreId">The ID of the genre to retrieve albums for.</param>
+        /// <returns>The list of albums belonging to the genre with the specified ID.</returns>
+        [HttpGet("genre/{genreId}")]
+        public async Task<ActionResult<IEnumerable<AlbumDto>>> GetAlbumsByGenreId(int genreId)
+        {
+            var albums = await _unitOfWork.Albums.GetAlbumsByGenreIdAsync(genreId);
+
+            if (albums == null || !albums.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<IEnumerable<AlbumDto>>(albums));
+        }
+
+        // GET: api/album/recordlabel/{recordLabelId}
+        /// <summary>
+        /// Retrieves a list of albums associated with the specified record label.
+        /// </summary>
+        /// <param name="recordLabelId">The ID of the record label to retrieve albums for.</param>
+        /// <returns>A list of albums associated with the specified record label.</returns>
+        [HttpGet("recordLabel/{recordLabelId}")]
+        public async Task<ActionResult<IEnumerable<AlbumDto>>> GetAlbumsByRecordLabelId(long recordLabelId)
+        {
+            var albums = await _unitOfWork.Albums.GetAlbumsByRecordLabelIdAsync(recordLabelId);
+
+            if (albums == null || !albums.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<IEnumerable<AlbumDto>>(albums));
+        }
+
+        // GET: api/album/search
+        /// <summary>
+        /// Searches for albums that match the specified search term.
+        /// </summary>
+        /// <param name="term">The search term used to filter albums.</param>
+        /// <param name="pageNumber">The page number of the results to retrieve. Must be greater than or equal to 1. Defaults to 1 if not
+        /// specified.</param>
+        /// <param name="pageSize">The number of albums to include in each page of results. Must be between 1 and 100. Defaults to 10 if not
+        /// specified or if an invalid value is provided.</param>
+        /// <returns>An <see cref="ActionResult{T}"/> containing a collection of <see cref="AlbumDto"/> objects representing the
+        /// albums that match the search criteria.</returns>
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<AlbumDto>>> SearchAlbums([FromQuery] string term, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1 || pageSize > 100) pageSize = 10;
+
+            var albums = await _unitOfWork.Albums.SearchAlbumsAsync(term ?? string.Empty, pageNumber, pageSize);
+            return Ok(_mapper.Map<IEnumerable<AlbumDto>>(albums));
         }
 
         // POST: api/album

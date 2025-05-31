@@ -5,7 +5,7 @@ namespace MusicCatalog.API.Repositories
     public interface IUnitOfWork : IDisposable
     {
         IRepository<Artist> Artists { get; }
-        IRepository<Album> Albums { get; }
+        IAlbumRepository Albums { get; }
         IRepository<Track> Tracks { get; }
         IRepository<Genre> Genres { get; }
         IRepository<Review> Reviews { get; }
