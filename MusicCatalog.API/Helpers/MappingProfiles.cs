@@ -12,7 +12,13 @@
             CreateMap<Album, AlbumDto>()
                 .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => src.Genre != null ? src.Genre.Name : null))
                 .ForMember(dest => dest.RecordLabel, opt => opt.MapFrom(src => src.RecordLabel != null ? src.RecordLabel.Name : null))
-                .ForMember(dest => dest.AlbumArtist, opt => opt.MapFrom(src => src.AlbumArtist));
+                .ForMember(dest => dest.AlbumArtist, opt => opt.MapFrom(src => src.AlbumArtist))
+                .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src =>
+                    src.Reviews != null && src.Reviews.Any()
+                    ? Math.Round(src.Reviews.Average(r => r.Rating), 1)
+                    : (double?)null))
+                .ForMember(dest => dest.ReviewCount, opt => opt.MapFrom(src =>
+                    src.Reviews != null ? src.Reviews.Count : 0));
 
             CreateMap<CreateAlbumDto, Album>()
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))

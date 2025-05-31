@@ -11,5 +11,7 @@
         public long DurationInSeconds { get; set; }
         public string? CoverImageUrl { get; set; }
         public string? Description { get; set; }
+        public double? AverageRating { get; set; }
+        public int ReviewCount { get; set; }
     }
 }
