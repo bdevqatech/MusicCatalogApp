@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MusicCatalog.API.Data;
 using MusicCatalog.API.Helpers;
 using MusicCatalog.API.Repositories;
@@ -46,6 +47,28 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+
+        try
+        {
+            var context = services.GetRequiredService<MusicCatalogContext>();
+
+            // Apply any pending migrations
+            await context.Database.MigrateAsync();
+
+            // Seed the database
+            await DbSeeder.SeedDatabase(context);
+
+            Console.WriteLine("Database migration and seeding completed successfully");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred during database migration or seeding: {ex.Message}");
+        }
+    }
 }
 
 app.UseHttpsRedirection();
