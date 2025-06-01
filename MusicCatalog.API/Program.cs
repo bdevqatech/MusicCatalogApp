@@ -8,6 +8,20 @@ using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins",
+         policy =>
+         {
+             policy.WithOrigins(
+                     "http://localhost:4200"    // Angular default
+                 )
+                 .AllowAnyHeader()
+                 .AllowAnyMethod()
+                 .AllowCredentials();
+         });
+});
+
 builder.Services.AddDbContext<MusicCatalogContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -42,6 +56,8 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine($"Connection to the database failed: {ex.Message}");
     }
 }
+
+app.UseCors("AllowSpecificOrigins");
 
 if (app.Environment.IsDevelopment())
 {
