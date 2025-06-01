@@ -1,0 +1,9 @@
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="error">{{ error }}</div>
+<div *ngIf="artist">
+  <h2>{{ artist.name }}</h2>
+  <img *ngIf="artist.imageUrl" [src]="artist.imageUrl" alt="{{ artist.name }}" />
+  <p *ngIf="artist.bio">{{ artist.bio }}</p>
+  <p *ngIf="artist.country">Country: {{ artist.country }}</p>
+  <a *ngIf="artist?.website" [href]="artist.website" target="_blank">Website</a>
+</div>
